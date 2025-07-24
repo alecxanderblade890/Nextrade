@@ -37,7 +37,8 @@
                     <!-- Message Form -->
                     <div class="mt-8">
                         <h3 class="text-xl font-semibold text-gray-800">Interested? Send a message.</h3>
-                        <form action="#" method="POST" class="mt-4 space-y-4">
+                        <form action="{{route('send.message', $item->user->email)}}" method="POST" class="mt-4 space-y-4">
+                            @csrf
                             <div>
                                 <label for="message" class="sr-only">Message</label>
                                 <textarea id="message" name="message" rows="4" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Hi Alice, I have a tripod I'd be interested in trading for your camera..."></textarea>

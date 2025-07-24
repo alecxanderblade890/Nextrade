@@ -7,6 +7,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
         @foreach ($items as $item)
+            @if ($item->user_id == Auth::user()->id)
+                @continue
+            @else
             <!-- Item Card Example 1 -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
                 <a href="{{route('show.item.details', $item->id)}}">
@@ -21,6 +24,7 @@
                     </div>
                 </a>
             </div>
+            @endif
         @endforeach
     </div>
 </main>

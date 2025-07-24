@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Cloudinary\Cloudinary;
+use Illuminate\Auth\Events\Registered;
 
 class AuthenticationController extends Controller
 {
+
     public function showLogin()
     {
         return view('auth.login');
@@ -28,17 +30,9 @@ class AuthenticationController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        //If using hashed
-        // if (Auth::attempt($validatedData)) {
-        //     return redirect()->route('pages.home')->with('success', 'Login successful. Welcome back!');
-        // }
-
-        $user = User::where('email', $validatedData['email'])->first();
-        if ($user && $user->password === $validatedData['password']) {
-            Auth::login($user);
+        if (Auth::attempt($validatedData)) {
             return redirect()->route('pages.home')->with('success', 'Login successful. Welcome back!');
         }
-
         throw ValidationException::withMessages([
             'credentials' => 'The provided credentials do not match our records. Please try again.',
         ]);
@@ -58,11 +52,11 @@ class AuthenticationController extends Controller
             'first_name' => $validatedData['first_name'],
             'last_name' => $validatedData['last_name'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'password' => Hash::make($validatedData['password']),
             'image_url' => $this->uploadProfileImage($request)
         ]);
 
-        Auth::login($user);
+        event(new Registered($user));
 
         return redirect()->route('pages.home')->with('success', 'Registration successful. Welcome!');
     }

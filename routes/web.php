@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\AddItemController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ItemDetailsController;
 
 Route::get('/', function () {
@@ -21,11 +21,10 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'cache.nocache'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('pages.home');
     Route::get('/show-add-item', [AddItemController::class, 'showAddItem'])->name('show.add.item');
-    Route::get('/show-inbox', [InboxController::class, 'showInbox'])->name('show.inbox');
     Route::get('/show-item-details/{id}', [ItemDetailsController::class, 'index'])->name('show.item.details');
     Route::post('/add-item', [AddItemController::class, 'addItem'])->name('add.item');
-
+    Route::post('/send-message/{email}', [EmailController::class, 'sendMessage'])->name('send.message');
 });

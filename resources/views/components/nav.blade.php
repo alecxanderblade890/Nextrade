@@ -14,7 +14,6 @@
             <div class="md:block flex items-center">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a href="{{route('pages.home')}}" class="{{request()->routeIs('pages.home') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                    <a href="{{route('show.inbox')}}" class="{{request()->routeIs('show.inbox') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">Inbox</a>
                     <a href="{{route('show.add.item')}}" class="{{request()->routeIs('show.add.item') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">Add Item</a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
