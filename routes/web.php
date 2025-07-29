@@ -13,11 +13,16 @@ Route::get('/', function () {
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
+// Authentication Routes
 Route::middleware('guest')->group(function () {
-   Route::get('/login', [AuthenticationController::class, 'showLogin'])->name('show.login');
-    Route::get('/register', [AuthenticationController::class, 'showRegister'])->name('show.register');
+    // Login Routes
+    Route::get('/login', [AuthenticationController::class, 'showLogin'])->name('show.login');
     Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
+    
+    // Registration Routes
+    Route::get('/register', [AuthenticationController::class, 'showRegister'])->name('show.register');
     Route::post('/register', [AuthenticationController::class, 'register'])->name('register');
+    
 });
 
 
@@ -27,4 +32,7 @@ Route::middleware(['auth', 'cache.nocache'])->group(function () {
     Route::get('/show-item-details/{id}', [ItemDetailsController::class, 'index'])->name('show.item.details');
     Route::post('/add-item', [AddItemController::class, 'addItem'])->name('add.item');
     Route::post('/send-message/{email}', [EmailController::class, 'sendMessage'])->name('send.message');
+    Route::get('/show-my-items', [ItemDetailsController::class, 'showMyItems'])->name('show.my.items');
+    Route::delete('/delete-item/{id}', [ItemDetailsController::class, 'deleteItem'])->name('delete.item');
+    Route::put('/edit-item/{id}', [ItemDetailsController::class, 'editItem'])->name('edit.item');
 });

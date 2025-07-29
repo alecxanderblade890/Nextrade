@@ -18,17 +18,17 @@
                 <!-- Item Title -->
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-700">Item Title</label>
-                    <input value="Primera" type="text" name="title" id="title" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., Vintage Film Camera">
+                    <input type="text" name="title" id="title" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., Vintage Film Camera">
                 </div>
                 <!-- Description -->
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="description" name="description" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Describe your item in detail. Mention its condition, age, etc.">Nami nga inum</textarea>
+                    <textarea id="description" name="description" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Describe your item in detail. Mention its condition, age, etc."></textarea>
                 </div>
                 <!-- What you want in return -->
                 <div>
                     <label for="exchange" class="block text-sm font-medium text-gray-700">What you'd like in return (optional)</label>
-                    <textarea id="exchange" name="exchange" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., A modern tripod, electronic gadgets, etc.">Emperador</textarea>
+                    <textarea id="exchange" name="exchange" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., A modern tripod, electronic gadgets, etc."></textarea>
                 </div>
                 <!-- Image Upload -->
                 <div>
@@ -54,7 +54,7 @@
                 </div>
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                         Post My Item
                     </button>
                 </div>

@@ -15,6 +15,7 @@
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a href="{{route('pages.home')}}" class="{{request()->routeIs('pages.home') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">Home</a>
                     <a href="{{route('show.add.item')}}" class="{{request()->routeIs('show.add.item') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">Add Item</a>
+                    <a href="{{route('show.my.items')}}" class="{{request()->routeIs('show.my.items') ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-700 hover:text-white'}} px-3 py-2 rounded-md text-sm font-medium">My Items</a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="text-gray-500 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('logout') ? 'bg-gray-900 text-white' : '' }}">

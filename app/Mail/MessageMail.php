@@ -29,7 +29,7 @@ class MessageMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new \Illuminate\Mail\Mailables\Address(Auth::user()->email), // Optional: overrides default from
+            from: new \Illuminate\Mail\Mailables\Address(Auth::user()->email, Auth::user()->first_name . ' ' . Auth::user()->last_name),
             subject: 'NEXTRADE: New Barter Message',
         );
     }
