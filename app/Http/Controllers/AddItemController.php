@@ -23,8 +23,16 @@ class AddItemController extends Controller
             'title' => 'required|max:255',
             'description' => 'required',
             'exchange' => 'nullable|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // Increased to 10MB
         ]);
+        
+        if (!$request->hasFile('image')) {
+            return back()->with('error', 'No image file was uploaded.');
+        }
+        
+        if (!$request->file('image')->isValid()) {
+            return back()->with('error', 'The uploaded file is not valid.');
+        }
 
         $cloudinary = new Cloudinary([
             'cloud' => [
