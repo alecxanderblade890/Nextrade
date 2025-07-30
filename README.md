@@ -130,7 +130,7 @@ We welcome contributions from the community! Please read our [contributing guide
 
 ## 📬 Contact
 
-For questions or feedback, please open an issue in the repository or contact [your-email@example.com](mailto:your-email@example.com).
+For questions or feedback, please open an issue in the repository or contact [alecxanderandaya6@gmail.com](mailto:alecxanderandaya6@gmail.com).
 
 ---
 
