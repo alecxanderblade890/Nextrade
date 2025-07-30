@@ -37,65 +37,13 @@ class VerificationController extends Controller
     }
 
     // You MUST have this method because you route to it:
-    public function verify(Request $request)
+    public function verify(EmailVerificationRequest $request)
     {
-        try {
-            // Log the incoming request details for debugging
-            \Log::info('Verification attempt', [
-                'user_id' => $request->route('id'),
-                'hash' => $request->route('hash'),
-                'expires' => $request->expires,
-                'signature' => $request->signature,
-                'url' => $request->fullUrl()
-            ]);
+        // This is the core logic from the VerifiesEmails trait
+        $request->fulfill();
 
-            // Check if user is already verified
-            if ($request->user()->hasVerifiedEmail()) {
-                return redirect($this->redirectTo)
-                    ->with('status', 'Your email is already verified.');
-            }
-
-            // Verify the signed URL
-            if (!URL::hasValidSignature($request)) {
-                \Log::error('Invalid verification signature', [
-                    'user_id' => $request->route('id'),
-                    'url' => $request->fullUrl(),
-                    'expected_hash' => sha1($request->user()->getEmailForVerification())
-                ]);
-                
-                return redirect()->route('verification.notice')
-                    ->with('error', 'The verification link is invalid or has expired. Please request a new verification link.');
-            }
-
-            // Verify the email hash matches
-            if (!hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
-                \Log::error('Email hash mismatch', [
-                    'user_id' => $request->route('id'),
-                    'expected_hash' => sha1($request->user()->getEmailForVerification()),
-                    'provided_hash' => $request->route('hash')
-                ]);
-                
-                return redirect()->route('verification.notice')
-                    ->with('error', 'The verification link is invalid.');
-            }
-
-            // Mark the user as verified
-            if ($request->user()->markEmailAsVerified()) {
-                event(new \Illuminate\Auth\Events\Verified($request->user()));
-            }
-
-            return redirect($this->redirectTo)
-                ->with('status', 'Thank you for verifying your email!');
-                
-        } catch (\Exception $e) {
-            \Log::error('Email verification error: ' . $e->getMessage(), [
-                'exception' => $e,
-                'trace' => $e->getTraceAsString()
-            ]);
-            
-            return redirect()->route('verification.notice')
-                ->with('error', 'An error occurred during email verification. Please try again.');
-        }
+        // After successful verification, redirect with a message
+        return redirect($this->redirectTo)->with('verified', true);
     }
 
     // You MUST have this method because you route to it:
