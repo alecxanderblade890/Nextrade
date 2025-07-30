@@ -57,8 +57,13 @@ class AuthenticationController extends Controller
         ]);
 
         event(new Registered($user));
-
-        return redirect()->route('pages.home')->with('success', 'Registration successful. Welcome!');
+        
+        // Log the user in
+        Auth::login($user);
+        
+        // Redirect to verification notice
+        return redirect()->route('verification.notice')
+            ->with('status', 'A verification link has been sent to your email address. Please verify your email to continue.');
     }
 
     public function logout(Request $request)
