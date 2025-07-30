@@ -7,6 +7,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemDetailsController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\VerificationController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -27,11 +28,11 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/email/verify', [App\Http\Controllers\VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\VerificationController::class, 'verify'])
+    Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
-    Route::post('/email/resend', [App\Http\Controllers\VerificationController::class, 'resend'])
+    Route::post('/email/resend', [VerificationController::class, 'resend'])
         ->middleware('throttle:6,1')
         ->name('verification.resend');
 });

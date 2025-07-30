@@ -39,11 +39,23 @@ class VerificationController extends Controller
     // You MUST have this method because you route to it:
     public function verify(EmailVerificationRequest $request)
     {
-        // This is the core logic from the VerifiesEmails trait
-        $request->fulfill();
+        try {
+            if ($request->user()->hasVerifiedEmail()) {
+                return redirect($this->redirectTo)->with('status', 'Your email is already verified.');
+            }
 
-        // After successful verification, redirect with a message
-        return redirect($this->redirectTo)->with('verified', true);
+            if ($request->user()->markEmailAsVerified()) {
+                event(new \Illuminate\Auth\Events\Verified($request->user()));
+            }
+
+            return redirect($this->redirectTo)
+                ->with('status', 'Thank you for verifying your email!');
+                
+        } catch (\Exception $e) {
+            \Log::error('Email verification failed: ' . $e->getMessage());
+            return redirect()->route('verification.notice')
+                ->with('error', 'Email verification failed. Please try again.');
+        }
     }
 
     // You MUST have this method because you route to it:

@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(
+            at: 'trust-proxies',
+            headers: \Illuminate\Http\Request::HEADER_X_FORWARDED_AWS_ELB
+        );
+        
         $middleware->alias([
             'cache.nocache' => \App\Http\Middleware\NoCache::class,
         ]);
