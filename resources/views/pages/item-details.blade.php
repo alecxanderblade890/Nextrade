@@ -36,16 +36,16 @@
 
                     <!-- Message Form -->
                     <div class="mt-8">
-                        <h3 class="text-xl font-semibold text-gray-800">Interested? Send a message.</h3>
+                        <h3 class="text-xl font-semibold text-gray-800">Interested? Send an email message.</h3>
                         <form action="{{route('send.message', $item->user->email)}}" method="POST" class="mt-4 space-y-4">
                             @csrf
                             <div>
-                                <label for="message" class="sr-only">Message</label>
+                                <label for="message" class="sr-only">Email Message</label>
                                 <textarea id="message" name="message" rows="4" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Hi Alice, I have a tripod I'd be interested in trading for your camera..."></textarea>
                             </div>
                             <div>
                                 <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
-                                    Send Message
+                                    Send Email Message
                                 </button>
                             </div>
                         </form>
