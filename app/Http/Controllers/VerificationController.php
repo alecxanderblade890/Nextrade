@@ -2,90 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\EmailVerificationRequest; // Important for verify method
+use Illuminate\Support\Facades\Auth; // For Auth::user()
+use Illuminate\Support\Facades\Log; // For debugging
 
-/**
- * Class VerificationController
- * @package App\Http\Controllers
- *
- * This controller handles the verification of email addresses.
- * It uses Laravel's built-in `VerifiesEmails` trait to provide
- * the necessary functionality for email verification.
- */
 class VerificationController extends Controller
 {
-    // Use the AuthorizesRequests trait for authorization checks.
     use AuthorizesRequests;
-    // Use the VerifiesEmails trait to handle email verification logic.
-    use VerifiesEmails;
+    // The VerifiesEmails trait is designed to *also* register routes.
+    // If you are manually registering routes, you might not *need* the trait itself
+    // if you copy its methods. Let's *not* use it here to avoid implicit magic.
+    // For simplicity, let's write out the methods.
 
-    /**
-     * Where to redirect users after successful email verification.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    // If you are using the trait, you often don't override these methods like this.
+    // For the manual routes, you MUST have these public methods.
 
-    /**
-     * Create a new controller instance.
-     *
-     * Applies middleware to protect routes related to email verification.
-     * 'auth' middleware ensures only authenticated users can access.
-     * 'signed' middleware ensures the verification link is signed and hasn't been tampered with.
-     * 'throttle:6,1' middleware limits verification attempts to 6 per minute.
-     *
-     * @return void
-     */
+    protected $redirectTo = '/home'; // This is still a good convention for post-verification redirect
+
     public function __construct()
     {
-        // Apply the 'auth' middleware to all methods in this controller.
         $this->middleware('auth');
-
-        // Apply the 'signed' middleware only to the 'verify' method.
-        // This ensures the verification URL is signed and valid.
         $this->middleware('signed')->only('verify');
-
-        // Apply the 'throttle' middleware to 'verify' and 'resend' methods.
-        // This prevents brute-force attacks on verification and resend requests.
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
-    /**
-     * Show the email verification notice.
-     *
-     * If the user has already verified their email, they are redirected to the home page.
-     * Otherwise, the 'auth.verify' view is displayed, prompting them to verify.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function show(Request $request)
     {
-        // Check if the authenticated user has already verified their email.
+        // The logic you already had for showing the view or redirecting if already verified.
         return $request->user()->hasVerifiedEmail()
-                        // If verified, redirect to the specified redirect path.
-                        ? redirect($this->redirectPath())
-                        // If not verified, show the email verification notice view.
-                        : view('auth.verify');
+                            ? redirect($this->redirectTo) // Use $this->redirectTo
+                            : view('auth.verify'); // Your verify.blade.php
     }
 
-    /**
-     * The user has been successfully verified.
-     *
-     * This method is called after a user's email has been successfully verified.
-     * It redirects the user to the specified path and flashes a success message.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function verified(Request $request)
+    // You MUST have this method because you route to it:
+    public function verify(EmailVerificationRequest $request)
     {
-        // Redirect the user to the specified path after successful verification.
-        // A success message is flashed to the session for display on the next request.
-        return redirect($this->redirectPath())
-            ->with('success', 'Your email has been verified successfully!');
+        // This is the core logic from the VerifiesEmails trait
+        $request->fulfill();
+
+        // After successful verification, redirect with a message
+        return redirect($this->redirectTo)->with('verified', true);
+    }
+
+    // You MUST have this method because you route to it:
+    public function resend(Request $request)
+    {
+        // This is the core logic from the VerifiesEmails trait
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect($this->redirectTo);
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('status', 'verification-link-sent');
     }
 }
